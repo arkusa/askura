@@ -1,0 +1,26 @@
+{
+  "name": "askura",
+  "version": "1.0.0",
+  "description": "askura's weblog",
+  "main": "index.js",
+  "scripts": {
+    "start": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arkusa/askura.git"
+  },
+  "keywords": [
+    "weblog"
+  ],
+  "author": "askura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arkusa/askura/issues"
+  },
+  "homepage": "https://github.com/arkusa/askura#readme",
+  "devDependencies": {
+    "vuepress": "^1.5.4"
+  }
+}

@@ -3,7 +3,7 @@
 # 确保脚本抛出遇到的错误
 set -e
 
-if (-d "docs/.vuepress/dist/");then
+if [ -d "docs/.vuepress/dist/" ];then
   ls -a docs/.vuepress/dist/ | grep -vE '^(\.|\.\.|\.git)$' | xargs rm -rf
 fi
 
@@ -23,8 +23,8 @@ if [ ! -d ".git/" ];then
 fi
 
 git add -A
-git commit -m $msg
+git commit -m "${msg}"
 
-git push git@github.com:askura/weblog.git master:release
+git push https://github.com/arkusa/weblog.git master:release
 
 cd -

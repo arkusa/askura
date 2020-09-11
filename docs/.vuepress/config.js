@@ -6,4 +6,7 @@ module.exports = {
   description: "askura's weblog",
 
   themeConfig: { nav, sidebar },
+  markdown: {
+    lineNumbers: true
+  }
 };

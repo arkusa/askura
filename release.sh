@@ -25,6 +25,6 @@ fi
 git add -A
 git commit -m "${msg}"
 
-git push https://github.com/arkusa/weblog.git master:release
+git push -f https://github.com/arkusa/weblog.git master:release
 
 cd -

@@ -1,3 +1,5 @@
+# git fetch
+
 ## 同步远端文件到本地
 
 我们知道GIT是一个基于快照的版本控制系统, GIT同步远端的过程其实就是下载远端所有文件快照(所有的`SHA-1`, 除了blob-SHA-1外, 还包括tree-SHA-1和commit-SHA-1)的过程, 即: `.git/refs/objects/`下的文件

@@ -1,6 +1,6 @@
 # git pull 
 
-在[fetch]('/git/remotes/fetch')中, 讲了GIT是如何将远端文件历史同步到本地, 但大部分情况下我们除了同步远端文件历史外, 还希望其和当前分支合并
+在[fetch](/git/remotes/fetch)中, 讲了GIT是如何将远端文件历史同步到本地, 但大部分情况下我们除了同步远端文件历史外, 还希望其和当前分支合并
 
 `git pull`是一个这样的命令, 是`git fetch` + `git merge`的复合命令
 

@@ -181,4 +181,4 @@ git commit -m 'feat(xx): xxxx'       # 完成开发
 
 1.  如果本地`dev1`分支存在, 那么其会切换到本地`dev1`分支
 2.  如果本地`dev1`分支不存在, 但是`refs/remotes/origin/dev1`存在, 其会创建`origin/dev1`的下游分支`dev1`并切换
-3.  如果`1`和`2`都满足, 其会将`dev1`理解为文件, 尝试从`HEAD`检出`dev1`的快照覆盖工作区的`dev1`
+3.  如果`1`和`2`不都满足, 其会将`dev1`理解为文件, 尝试从`HEAD`检出`dev1`的快照覆盖工作区的`dev1`

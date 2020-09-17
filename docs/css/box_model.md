@@ -157,21 +157,23 @@ window.addEventListener('load', function() {
 });
 ```
 <script>
-window.addEventListener('load', function() {
-  const ie = document.getElementById('ie');
-  const standard = document.getElementById('standard');
-  const themeContent = document.querySelector('.theme-default-content.content__default');
+export default {
+  mounted () {
+    const ie = document.getElementById('ie');
+    const standard = document.getElementById('standard');
+    const themeContent = document.querySelector('.theme-default-content.content__default');
 
-  [{ name: 'ie盒模型', dom: ie }, { name: 'standard盒模型', dom: standard }].forEach(({ dom, name}) => {
-    const p = document.createElement('p');
-    const pre = document.createElement('pre');
+    [{ name: 'ie盒模型', dom: ie }, { name: 'standard盒模型', dom: standard }].forEach(({ dom, name}) => {
+      const p = document.createElement('p');
+      const pre = document.createElement('pre');
 
-    p.innerText = name;
-    pre.innerText = JSON.stringify(dom.getBoundingClientRect(), null, 2);
-    pre.style.background = 'aliceblue';
+      p.innerText = name;
+      pre.innerText = JSON.stringify(dom.getBoundingClientRect(), null, 2);
+      pre.style.background = 'aliceblue';
 
-    themeContent.appendChild(p);
-    themeContent.appendChild(pre);
-  });
-});
+      themeContent.appendChild(p);
+      themeContent.appendChild(pre);
+    });
+  }
+}
 </script>

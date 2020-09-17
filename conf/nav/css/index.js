@@ -5,4 +5,5 @@ const layoutItems = [
 module.exports = [
   { text: 'Layout', items: layoutItems },
   { text: '包含块(position定位)', link: '/css/contain_block' },
+  { text: 'Stacking Context', link: '/css/stacking_context' },
 ];

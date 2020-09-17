@@ -112,29 +112,15 @@ git branch -vv | grep dev1
 
 创建分支然后切换分支
 
-但是其有一种特殊的逻辑
-
---- 
-
-如果没有指定`start-point`并且存在和`branch_name`一样名字的远程分支的镜像 即: `refs/remotes/origin/branch_name`存在
-
-它会以远程`branch_name`分支为上游分支创建本地`branch_name`分支
-
-即: 
-
-`git checkout -b branch_name`
-
-- 如果`refs/remotes/origin/branch_name`存在, 则是`git branch --track branch_name origin/branch_name`的另外一种写法
-
-- 如果`refs/remotes/origin/branch_name`不存在, 则是`git branch (--no-track) branch_name (HEAD)`的另外一种写法
-
---- 
-
 - `git branch [-c | -C] <old_branch> <new_branch>`
 
 严格意义来说它不是一个创建分支的命令, 他是`copy`了一个分支
 
 `-C`表示强制`copy` 意味着`new_branch`已经存在
+
+### 一些补充
+
+[checkout 创建且切换分支](/git/checkout.html#创建并切换分支)
 
 ## branch的upstream/downstream关系
 

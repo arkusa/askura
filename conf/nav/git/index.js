@@ -7,5 +7,6 @@ const remoteItems = [
 
 module.exports = [
   { text: '远程仓库', items: remoteItems },
-  { text: 'git分支', link: '/git/branch', },
+  { text: 'branch', link: '/git/branch' },
+  { text: 'checkout', link: '/git/checkout' },
 ];

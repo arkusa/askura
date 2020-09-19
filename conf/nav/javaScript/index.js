@@ -3,4 +3,7 @@ const ES6 = [
   { text: 'Promise Polyfill', link: '/javaScript/ES6/Promise/polyfill' },
 ];
 
-module.exports = [{ text: 'ES6', items: ES6 }];
+module.exports = [
+  { text: 'ES6', items: ES6 },
+  { text: 'RegExp', link: '/javaScript/regExp' },
+];

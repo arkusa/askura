@@ -1,6 +1,6 @@
 const webSafeties = [
-  { text: 'csrf', link: '/safety/web/csrf' },
-  { text: 'xss', link: '/safety/web/xss' },
+  { text: 'CSRF', link: '/safety/web/csrf' },
+  { text: 'XSS', link: '/safety/web/xss' },
 ];
 
 const http = [

@@ -27,3 +27,17 @@ git config --show-origin --get-all credential.helper
 ```
 
 舒服😌 umm.....
+
+## @date 2020/09/28
+
+最近使用tmux保持工作现场, 发现这个问题在tmux下又出现了
+
+还是通过`git config --show-origin --get-all credential.helper`查看配置所处的文件
+
+```shell
+git config --show-origin --get-all credential.helper
+
+file: /Applications/Xcode.app/Contents/Developer/usr/share/git-core/gitconfig      credential.helper=osxkenchain
+
+# 注释掉对应的配置
+```

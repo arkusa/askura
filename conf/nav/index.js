@@ -3,6 +3,7 @@ module.exports = [
   { text: 'GIT', items: require('./git') },
   { text: 'VIM', items: require('./vim') },
   { text: 'TMUX', items: require('./tmux') },
+  { text: 'REDUX', items: require('./redux') },
   { text: 'CSS', items: require('./css') },
   { text: 'JavaScript', items: require('./javaScript') },
   { text: '前端工程化', items: require('./engineering') },

@@ -6,7 +6,7 @@ module.exports = [
   { text: 'TMUX', items: require('./tmux') },
   { text: 'REDUX', items: require('./redux') },
   { text: 'Browser', items: require('./browser') },
-  { text: 'JavaScript', items: require('./javaScript') },
+  { text: 'JavaScript', items: require('./javascript') },
   { text: '前端工程化', items: require('./engineering') },
   { text: '一些有意思的东西', items: require('./interesting') },
 ];

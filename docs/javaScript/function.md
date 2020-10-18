@@ -885,67 +885,205 @@ for (var i = 0; i < 10; i += 1) {
 }
 ```
 
-## 函数的常用技巧
+## 常用的高阶函数
+
+> 高阶函数: 接受一个函数, 返回一个新的函数
 
 ### curry
 
-`curry`函数是将函数的实参分别以部分传入的一种高阶函数
+`curry`函数是将多参数函数变成多个单参数函数的一种方法
 
-高阶函数: 接受一个函数, 返回一个新的函数
+它是函数式编程的一种思想
+
+比如下面的🌰 :
+
+```javascript
+function com(a, b) {
+  return a * a + b * b;
+}
+
+// 函数式思想
+const pow = v => v * v;
+const com = (a, b) => pow(a) + pow(b);
+```
+
+假如我们的语言不支持多参数函数, 那么怎么解决上面的`function com`呢? 这时候就要使用到`curry`
+
+```javascript
+const com = curry((a, b) => pow(a) + pow(b));
+com(1)(2);
+```
 
 ---
 
-`curry`函数的应用场景
+因为`javascript`本身支持多参数函数, 可以将其理解为将多参数函数变成多个单/多参数函数的一种方法
 
-函数的参数分别在不同函数中, 比如
+由于`javascript`并不是一门单纯的函数式语言, 所以`curry`在实际应用中并不常用( 你所接触的大部分`curry`函数 实际上 只是`partial`函数 ), 并且由于面向对象的性质在实际封装`curry`的时候还要多做一些思考💭
 
-```javascript
-const promise = new Promise((resolve, reject) => {
-  resolve(1); 
-});
-
-// 这里的resolve会接受一个1
-// 同时这个resolve会改变当前这个promise的状态
-// 所以这个promise的上下文一定是预先已经通过curry的方式传入到resolve中了
-
-// 类似于这样
-const [resolve, reject] = applyOnce(
-  partial(resolvePromise, context), // 这里的context 就是promise
-  partial(rejectPromise, context)
-);
-```
-当前上面我使用的是`partial`
-
-`curry`要求实参可以以任意数量传入函数知道实参的数量 `>=` 形参的数量则执行
-
-```javascript
-function add(a, b, c, d) {}
-
-add(1)(2)(3)(4);
-add(1,2,3)(4);
-add(1)(2,3,4);
-add(1)(2,3,4, 5); // 5被忽略
-add(1)(2)(3)(4)(5); // error
-```
-
-`curry`实现
+下面是我📦 的 `curry`实现, 完整代码可以看这里[curry](https://github.com/arkusa/javascript_utils/tree/main/curry)
 
 ```javascript
 function curry(func, ...argvs) {
   let context = null;
-  const len = func.length;
-
+  
   function acceptNextArgvs(...nextArgvs) {
-    context = (this === undefined || this === new Function('return this')())
+    context = (this === undefined || this === globalThis)
       ? context
       : this;
-
+  
     argvs = argvs.concat(nextArgvs);
-    const ret = argvs.length >= len
+
+    const ret = execRule({ func, argvs, nextArgvs })
       ? func.call(context, ...argvs)
       : acceptNextArgvs;
-
+  
     return ret;
+  }
+  
+  function F() {}
+  
+  F.prototype = func.prototype;
+  acceptNextArgvs.prototype = new F();
+  acceptNextArgvs.prototype.constructor = acceptNextArgvs;
+  acceptNextArgvs.prototype.toString = () => func.toString();
+  
+  return acceptNextArgvs;
+}
+```
+#### 一个常见的面试题是:
+
+提供一个方法可以支持`add(1)(2) // 3`和`add(1)(2)(3) // 6`, 其实这就是在考察`curry`函数
+
+但是这个问题的关键点在于参数是不定数量的, 而在`javascript`中需要一个条件让函数执行, (可能在像`Haskell`这样的强类型函数式编程语言可以通过函数的声明来确定条件, 但是`javascript`不行)
+
+所以上面的问题在`javascript`中并不能✅ , 如果是`add(1)(2)()`或者`add(1)(2)(3)()` 或者 定参数都可以
+
+但是很多面试官都直接抛出这个东西来让候选人完成, 其实大部分的面试官都忘记了一个很重要的前提条件, 即: **`add(1)(2)`是在控制台执行的**
+
+在控制台执行`add(1)(2)` 等价于 `console.log(add(1)(2))`, 这会发生隐式类型转换, 调用函数的`toString`方法, 这就是一个可执行条件
+
+(我之前面试的时候就是这样, 面试官条件都没说全就让实现, 🤮 )
+
+```javascript
+// 这里我就用我的curry封装来实现了, 目前还没有发布npm
+import {
+  curryFactory,
+  extraCallExecRule,
+} from 'my_curry';
+
+const curry = curryFactory(extraCallExecRule);
+
+add = curry(add);
+
+const toString = add.toString;
+add.toString = function() {
+  add();
+  return toString();
+}
+```
+
+### partial
+
+偏函数就是预先传入一些参数, 之后在传入剩下的参数, 在`javascript`中一般我们认为的`curry`其实都是`partial`
+
+```C
+// C
+int foo(int a, int b, int c) {
+  return a + b + c;
+}
+
+int foo23(int a, int c) {
+  return foo(a, 23, c);
+}
+
+// foo23 就是 foo的偏函数
+// 很常见吧
+```
+
+用`curry`可以很简单的实现大部分的`partial`
+
+但是`curry`是严格定义顺序的, 即: 只能按照函数参数的顺序传入。但是`partial`则没有这种要求, 我们可以使用`placehoder`占位
+
+#### partial实现
+
+```javascript
+function concat(argvs, nextArgvs, placeholder) {
+  const result = [];
+  let nextArgvsPointer = 0;
+
+  for (let i = 0; i < argvs.length; i += 1) {
+    const argv = argvs[i];
+
+    if (argv !== placeholder) result.push(argv);
+    else {
+      result.push(nextArgvs[nextArgvsPointer]);
+      nextArgvsPointer += 1;
+    }
+  }
+
+  while(nextArgvsPointer < nextArgvs.length) {
+    result.push(nextArgvs[nextArgvsPointer]);
+    nextArgvsPointer += 1;
+  }
+
+  return result;
+}
+
+function partial(func, ...argvs) {
+  function acceptNextArgvs(...nextArgvs) {
+    return func.call(this, ...concat(argvs, nextArgvs, placeholder));
+  }
+
+  function F() {}
+  
+  F.prototype = func.prototype;
+  acceptNextArgvs.prototype = new F();
+  acceptNextArgvs.prototype.constructor = acceptNextArgvs;
+  acceptNextArgvs.prototype.toString = () => func.toString();
+
+  return acceptNextArgvs;
+}
+```
+
+完整实现[partial](https://github.com/arkusa/javascript_utils/blob/main/partial/src/index.js)
+
+### thunk
+
+关于`thunk`的解释请移步[什么是thunk函数](https://es6.ruanyifeng.com/#docs/generator-async#Thunk-%E5%87%BD%E6%95%B0)
+
+简单来说就是`thunk`是函数惰性使用参数的一种方案, 在`javascript`中 主要的应用是自动控制`generator`函数流程
+
+`thunk`函数是`curry`或者`partial`函数的子集(具体看怎么实现), 是接受回调函数的异步函数的特殊`partial | curry`实现(特殊在 **最后一个传入的参数必须是函数**)
+
+即:
+
+```javascript
+const read = thunk(fs.readFile);
+read(filename)(callback);
+
+// 只能是thunk(func)()()...(callback)这样的形式
+```
+
+不过一般都是`thunk(func)(argvs)(callback)` 这样的形式, 因为这样的形式最符合`generator`的流程控制
+
+生产环境的`thunk`可以引入**tj**的`thunkify`
+
+下面是我的实现, 其中`applyOnce`这个方法很重要, 下面注释中有说明, 是我阅读过**tj**大神的`thunkify`中得到的启发
+
+```javascript
+function thunkify(func) {
+  function acceptNextArgvs(...argvs) {
+    const context = this;
+
+    function acceptCallback(callback) {
+      try {
+        return func.call(context, ...argvs, applyOnce(callback));
+      } catch (err) {
+        return callback(err);
+      }
+    }
+
+    return acceptCallback;
   }
 
   function F() {}
@@ -953,16 +1091,61 @@ function curry(func, ...argvs) {
   F.prototype = func.prototype;
   acceptNextArgvs.prototype = new F();
   acceptNextArgvs.prototype.constructor = acceptNextArgvs;
-  acceptNextArgvs.toString = () => func.toString();
+  acceptNextArgvs.prototype.toString = () => func.toString();
 
   return acceptNextArgvs;
 }
-```
-### partial
 
-### thunk
+// 对回调函数需要加🔒, 保证只执行一次
+// 这是由于thunkify往往和co一起使用
+// 即：其总是和generatory 函数的自动执行息息相关
+// 看一下下面的🌰
+/*
+ * function asyncLog(l, callback) {
+ *   try {
+ *     console.log(l);
+ *     callback(null, l);
+ *     callback(null, l);
+ *   } catch(err) {
+ *     callback(null, l);
+ *     callback(null, l);
+ *   }
+ * }
+ */
+// 上面的🌰 会导致自动流程控制的yieldResult.value(next) 中的next被执行了2次
+// 从而导致generator流程⏩了1个流程
+function applyOnce(func) {
+  let called = false;
+
+  return function (...argvs) {
+    if (called) return;
+
+    called = true;
+    func.call(this, ...argvs);
+  };
+}
+```
 
 ### compose
+
+`compose`用来复合这样的函数`A(B(C(D(F()))))`, 这样的代码很容易缺少`)`, 也不方便阅读
+
+`compose`可以让`A(B(C(D(F(argvs)))))`变成`compose(A, B, C, D, F)(argvs)`这样看起来就舒服多了
+
+将函数嵌套变成像右偏移的参数, 是一种代码视觉上的优化
+
+在`redux(applyMiddle)`中有使用到这种技巧
+
+#### 实现
+
+```javascript
+const compose = (...funcs) =>
+  funcs.reduce(
+    (prev, func) =>
+      (...argvs) =>
+        prev(func.call(this, ...argvs))
+  );
+```
 
 ## 函数扩展
 

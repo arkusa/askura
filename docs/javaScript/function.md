@@ -945,7 +945,7 @@ function curry(func, ...argvs) {
   F.prototype = func.prototype;
   acceptNextArgvs.prototype = new F();
   acceptNextArgvs.prototype.constructor = acceptNextArgvs;
-  acceptNextArgvs.prototype.toString = () => func.toString();
+  acceptNextArgvs.toString = () => func.toString();
   
   return acceptNextArgvs;
 }
@@ -1039,7 +1039,7 @@ function partial(func, ...argvs) {
   F.prototype = func.prototype;
   acceptNextArgvs.prototype = new F();
   acceptNextArgvs.prototype.constructor = acceptNextArgvs;
-  acceptNextArgvs.prototype.toString = () => func.toString();
+  acceptNextArgvs.toString = () => func.toString();
 
   return acceptNextArgvs;
 }
@@ -1091,7 +1091,7 @@ function thunkify(func) {
   F.prototype = func.prototype;
   acceptNextArgvs.prototype = new F();
   acceptNextArgvs.prototype.constructor = acceptNextArgvs;
-  acceptNextArgvs.prototype.toString = () => func.toString();
+  acceptNextArgvs.toString = () => func.toString();
 
   return acceptNextArgvs;
 }

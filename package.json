@@ -4,7 +4,7 @@
   "description": "askura's weblog",
   "main": "index.js",
   "scripts": {
-    "start": "vuepress dev docs",
+    "start": "vuepress dev docs --open",
     "build": "vuepress build docs"
   },
   "repository": {

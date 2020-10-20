@@ -105,7 +105,7 @@ console.log('script end')
 
 ### Event Loop 流程
 
-![event loop](/imgs/browser_event_loop/event_loop.png)
+![event loop](/weblog/imgs/browser_event_loop/event_loop.png)
 
 意思是, 浏览器在每一次的`Loop`中
 

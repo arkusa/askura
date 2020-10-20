@@ -4,4 +4,5 @@ const renderItems = [
 
 module.exports = [
   { text: 'Render', items: renderItems },
+  { text: 'Processing Model', link: '/browser/processing_model' },
 ];

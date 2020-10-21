@@ -4,7 +4,8 @@ const renderItems = [
 
 const netItems = [
   { text: 'Cross Domain', link: '/browser/net/cross_domain' },
-  { text: 'JSONP', link: '/browser/net/jsonp' }
+  { text: 'JSONP', link: '/browser/net/jsonp' },
+  { text: 'IFrame Cross', link: '/browser/net/iframe_cross' },
 ];
 
 module.exports = [

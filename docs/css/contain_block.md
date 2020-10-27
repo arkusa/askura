@@ -66,7 +66,7 @@ Q:
 
 A: 
 
-小明想: 你都这么问了, 那肯定不是啊, 可为啥不是啊, 在向下面问我咋办...
+小明想: 你都这么问了, 那肯定不是啊...
 
 应该不是, 小明含糊的回答到
 
@@ -108,9 +108,9 @@ umm...实际元素在创建的时候会产生属于他们的`Contain Block`包�
 
 - **absolute**
 
-其`Contain Block`是有定位的父级元素(递归的文档)的`padding`区域
+其`Contain Block`是有定位的父级元素(递归文档)的`padding`区域
 
-- **如果 fixed 和 absolute 其父级(可以向上递归)存在某些css属性**
+- **如果 fixed 和 absolute 其长辈元素(从父元素向上递归)存在某些css属性**
 
 其`Contain Block`是存在这些属性的`padding`区域
 

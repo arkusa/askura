@@ -10,4 +10,6 @@ module.exports = [
   { text: '前端工程化', items: require('./engineering') },
   { text: '设计模式', items: require('./design_pattern') },
   { text: '一些有意思的东西', items: require('./interesting') },
+  { text: 'vue', items: require('./vue') },
+  { text: 'Threejs', items: require('./threejs') },
 ];
